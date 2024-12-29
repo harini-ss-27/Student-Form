@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa; /* Light background for the page */
+        }
+        .form-container {
+            border: 2px solid #007BFF; /* Border color */
+            background-color: #E3F2FD; /* Light blue background */
+            padding: 20px;
+            width: 400px;
+            border-radius: 10px; /* Rounded corners */
+            margin-bottom: 20px;
+        }
+        .form-container label {
+            display: inline-block;
+            width: 100px; /* Align labels */
+            font-weight: bold;
+        }
+        .form-container input,
+        .form-container select {
+            width: calc(100% - 120px); /* Adjust to align with labels */
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        .form-container .gender-container {
+            display: flex;
+            align-items: center;
+            
+        }
+        .form-container .gender-container label {
+            margin: 0 10px 0 0; /* Add spacing between label and radio buttons */
+            width:auto; /* Prevent label from taking too much space */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #343A40; /* Dark border for the table */
+        }
+        th, td {
+            text-align: center;
+            padding: 10px;
+        }
+        th {
+            background-color: #007BFF; /* Header background */
+            color: white;
+        }
+        td {
+            background-color: #F8F9FA; /* Table cells background */
+        }
+        .delete-btn {
+            background-color: #DC3545; /* Delete button color */
+            color: white;
+            border: 1px solid #a71d2a;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background-color: #a71d2a; /* Darker red on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Form</h1>
+    <div class="form-container">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+        <br>
+        <label for="age">Age:</label>
+        <input type="number" id="age" required>
+        <br>
+        <div class="gender-container">
+            <label>Gender:</label>
+            <input type="radio" id="male" name="gender" value="Male" required>
+            <label for="male">Male</label>
+            <input type="radio" id="female" name="gender" value="Female">
+            <label for="female">Female</label>
+        </div>
+        <br>
+        <label for="course">Course:</label>
+        <select id="course" required>
+            <option value="JavaScript">JavaScript</option>
+            <option value="Python">Python</option>
+            <option value="Java">Java</option>
+        </select>
+        <br>
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" required>
+        <br>
+        <button id="save-btn">Save</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Course</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="student-table">
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById('save-btn').addEventListener('click', function() {
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const gender = document.querySelector('input[name="gender"]:checked');
+            const course = document.getElementById('course').value;
+            const email = document.getElementById('email').value;
+
+            if (!name || !age || !gender || !email) {
+                alert('Please fill out all fields!');
+                return;
+            }
+
+            const genderValue = gender.value;
+            const table = document.getElementById('student-table');
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${name}</td>
+                <td>${age}</td>
+                <td>${course}</td>
+                <td>${genderValue}</td>
+                <td>${email}</td>
+                <td><button class="delete-btn">Delete</button></td>
+            `;
+
+            table.appendChild(row);
+
+            row.querySelector('.delete-btn').addEventListener('click', function() {
+                table.removeChild(row);
+            });
+
+            // Clear form fields after saving
+            document.getElementById('name').value = '';
+            document.getElementById('age').value = '';
+            document.querySelectorAll('input[name="gender"]').forEach(input => input.checked = false);
+            document.getElementById('course').value = 'JavaScript';
+            document.getElementById('email').value = '';
+        });
+    </script>
+</body>
+</html>
